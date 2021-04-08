@@ -1,0 +1,25 @@
+[app/ui]
+owner = admin
+version = 8.1.3
+modtime = 1616643408.651232000
+
+[app/launcher]
+owner = admin
+version = 8.1.3
+modtime = 1616643408.653444000
+
+[app/package/check_for_updates]
+version = 8.1.3
+modtime = 1616643408.654228000
+
+[views/home]
+owner = admin
+version = 8.1.3
+modtime = 1617838144.450486000
+
+[macros/froniusindex]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = system
+owner = admin
+version = 8.1.3
+modtime = 1617838120.822464000
