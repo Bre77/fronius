@@ -1,0 +1,7 @@
+
+        <dashboard version="2" theme="dark">
+            <label>Showcase</label>
+            <description></description>
+            <definition><![CDATA[{"visualizations":{"viz_4Z4VPmjn":{"type":"viz.area","dataSources":{"primary":"ds_GQ2LOtUU"},"options":{"chart.nullValueMode":"connect","chart.stackMode":"stacked","axisTitleX.text":"","axisTitleY.text":"","axisY2.enabled":true,"axisY2.fields":"load","axis2Y.includeZero":true}}},"dataSources":{"ds_GQ2LOtUU":{"type":"ds.search","options":{"query":"| tstats rate(Body.0.EnergyReal_WAC_Sum_Consumed) as Import rate(Body.0.EnergyReal_WAC_Sum_Produced) as Export rate(Body.Site.E_Total) as Solar where `froniusindex` (sourcetype=\"fronius:meter\" OR sourcetype=\"fronius:powerflow\") by _time span=1m \n| eval Load=(Solar-Export+Import)*3600, Usage=(Solar-Export)*3600, Export=Export*3600, Import=Import*3600"},"name":"24 hour timechart"}},"defaults":{"dataSources":{"ds.search":{"options":{"queryParameters":{"latest":"$global_time.latest$","earliest":"$global_time.earliest$"}}}}},"inputs":{"input_global_trp":{"type":"input.timerange","options":{"token":"global_time","defaultValue":"-24h@h,now"},"title":"Global Time Range"}},"layout":{"type":"grid","options":{},"structure":[{"item":"viz_4Z4VPmjn","type":"block","position":{"x":0,"y":0,"w":1200,"h":400}}],"globalInputs":["input_global_trp"]},"description":"","title":"Showcase"}]]></definition>
+            <assets><![CDATA[{}]]></assets>
+        </dashboard>

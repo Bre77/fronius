@@ -1,0 +1,70 @@
+<form version="1.1">
+  <label>Electricity Bill</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time">
+      <label>Billing Period</label>
+      <default>
+        <earliest>@mon+14d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="ut">
+      <label>Usage Tarrif</label>
+      <default>21.901</default>
+    </input>
+    <input type="text" token="fit">
+      <label>Feed In Tarrif</label>
+      <default>-13.5</default>
+    </input>
+    <input type="text" token="ds">
+      <label>Daily Supply</label>
+      <default>93.973</default>
+    </input>
+    <input type="text" token="unit">
+      <label>Unit</label>
+      <default>cents</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <search>
+          <query>| tstats range(_time) as seconds range(Body.0.EnergyReal_WAC_Sum_Produced) as export range(Body.0.EnergyReal_WAC_Sum_Consumed) as import where `froniusindex` sourcetype="fronius:meter"
+| eval Cost=(import/1000*$ut$) + (export/1000*$fit$) + (seconds/86400*$ds$)
+| fields _time Cost</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="unit">$unit$</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>| tstats range(Body.0.EnergyReal_WAC_Sum_Produced) as export range(Body.0.EnergyReal_WAC_Sum_Consumed) as import where `froniusindex` sourcetype="fronius:meter" by _time span=10m
+| streamstats range(_time) as seconds, max(max) as end, sum(export) as export, sum(import) as import
+| eval Cost=(import/1000*$ut$) + (export/1000*$fit$) + (seconds/86400*$ds$)
+| fields _time Cost</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.text">$unit$</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="height">398</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+</form>

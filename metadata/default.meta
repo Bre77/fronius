@@ -28,8 +28,8 @@ export = system
 export = system
 
 
-### VIEWSTATES: even normal users should be able to create shared viewstates
+### VIEWS: even normal users should be able to create shared viewstates
 
-[viewstates]
+[views]
 access = read : [ * ], write : [ * ]
-export = system
+export = app
